@@ -1,13 +1,42 @@
-import { c } from '@/assets/data';
-import { useState } from 'react';
+import { codeData } from '@/assets/data';
+import { PracticeItemStyle } from './style';
+import { useRouter } from 'next/router';
 
-const PracticeItem = () => {
+interface langProps {
+  select: string;
+}
+
+const PracticeItem = (props: langProps) => {
+  const router = useRouter();
+  const RoutingTyping = (x: any) => {
+    router.push({
+      pathname: `/practice/typing/${x.lang}`,
+      query: { title: x.title },
+    });
+  };
+  let data =
+    props.select === 'all' || props.select.length === 0
+      ? codeData
+      : codeData.filter((i: any) => i.lang === props.select);
+
   return (
-    <>
-      {c?.map((x: any, i: number) => {
-        return <div>{x.lang + i}</div>;
-      })}
-    </>
+    <PracticeItemStyle>
+      <>
+        {data?.map((x: any, i: number) => {
+          return (
+            <div
+              onClick={() => {
+                RoutingTyping(x);
+              }}
+              className="item"
+            >
+              <div className="lang">{x.lang}</div>
+              <div className="title">{x.title}</div>
+            </div>
+          );
+        })}
+      </>
+    </PracticeItemStyle>
   );
 };
 

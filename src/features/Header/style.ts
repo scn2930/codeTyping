@@ -32,6 +32,7 @@ export const HeaderStyle = styled.div`
     cursor: pointer;
   }
   .right li:hover {
-    font-size: 1.5rem;
+    transform: scale(1.5);
+    transition: ease-in-out 0.3s;
   }
 `;
