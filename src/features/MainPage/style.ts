@@ -5,46 +5,49 @@ export const MainStyle = styled.div`
   height: 100vh;
   box-sizing: border-box;
   margin: 0 auto;
-  /* background-color: beige; */
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
   .textWrap {
-    height: 100vh;
-    display: grid;
-    place-items: center;
     position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .text {
-    width: 22ch;
-    /* animation: typing 2s steps(15), blink 0.5s step-end infinite alternate; */
+    font-size: 2.5em;
+    font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid;
-    font-size: 3em;
-    opacity: 0; /* Initially hidden */
-    position: absolute; /* Positioned absolutely for layering */
+    color: #333;
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    transform: translateY(-50%);
   }
 
   .text-enter {
-    animation: typing 1s steps(15) forwards; /* Typing effect */
+    animation: typing 2s steps(30) forwards;
   }
 
   .text-exit {
-    animation: fadeOut 0.5s forwards; /* Fade out effect */
+    animation: fadeOut 0.5s forwards;
   }
 
   @keyframes typing {
     from {
       width: 0;
-      opacity: 1; /* Visible when typing starts */
+      opacity: 1;
     }
     to {
-      width: 22ch;
-    }
-  }
-
-  @keyframes blink {
-    50% {
-      border-color: transparent;
+      width: 100%;
     }
   }
 
@@ -63,8 +66,8 @@ export const ButtonStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; // 부모의 높이를 기준으로 중앙 정렬을 위해 추가
-  width: 100%; // 부모의 너비를 기준으로 중앙 정렬을 위해 추가
+  height: 100vh;
+  width: 100%;
 
   .buttonWrap {
     display: flex;
@@ -77,29 +80,39 @@ export const ButtonStyle = styled.div`
     display: flex;
     flex-direction: column;
     gap: 30px;
+
     Button {
       width: 300px;
-      height: 40px;
-      background-color: black;
-      color: white;
+      height: 50px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: 2px solid #007bff;
+      border-radius: 8px;
       font-size: 18px;
-    }
-    Button:hover {
-      width: 600px;
-      background-color: white !important;
-      color: black !important;
-      font-size: 25px;
       font-weight: bold;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    Button:hover {
+      font-size: 23px;
+      background-color: #0056b3;
+      color: #ffffff;
+      border-color: #0056b3;
+      transform: scale(1.05);
+      cursor: pointer;
       span::after {
         content: ' ->';
       }
     }
   }
+
   .btnTop {
     display: flex;
     justify-content: space-between;
     gap: 50px;
   }
+
   .btnBottom {
     display: flex;
     justify-content: center;

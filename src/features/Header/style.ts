@@ -16,10 +16,6 @@ export const HeaderStyle = styled.div`
     line-height: 100px;
     font-size: 2rem;
     cursor: pointer;
-    /* div:hover {
-      font-size: 3rem;
-      color: red;
-    } */
   }
 
   .right {
