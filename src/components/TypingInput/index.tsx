@@ -20,6 +20,15 @@ interface CodeProps {
   inputCount: number;
   focusIndex: number;
   setFocusIndex: any;
+  totalErrors: any;
+  setTotalErrors: any;
+  totalTyping: any;
+  setTotalTyping: any;
+  totalAccuracy: any;
+  setTotalAccuracy: any;
+  sumError: number;
+  avgAcc: string;
+  avgTyping: string;
 }
 
 const TypingInput = (props: CodeProps) => {
@@ -28,6 +37,7 @@ const TypingInput = (props: CodeProps) => {
   const [color, setColor] = useState(true);
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(0);
+  const [enter, setIsEnter] = useState(false);
   const intervalRef: any = useRef();
 
   const inputChange = (e: string) => {
@@ -35,12 +45,12 @@ const TypingInput = (props: CodeProps) => {
     if (!isTyping) {
       setIsTyping(true);
       props.setStartTime(Date.now());
+      setIsEnter(false);
     }
     setText(e);
     if (e === props.code) {
       setIsTyping(false);
       props.setEndTime(Date.now());
-      props.setAccuracy(100);
     } else {
       e.split('').map((x: string, i: number) => {
         if (x !== props.code[i]) {
@@ -78,81 +88,91 @@ const TypingInput = (props: CodeProps) => {
   }, [isTyping]);
 
   // 정확도 계산
+  const typing = props.code.split('');
+  const textArr = text.split('');
+  const onText = typing.reduce((count, item, index) => {
+    if (index < textArr.length && item === textArr[index]) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+
   useEffect(() => {
-    const typing = props.code.split('');
-    const textArr = text.split('');
-    const onText = typing.reduce((count, item, index) => {
-      if (index < textArr.length && item === textArr[index]) {
-        return count + 1;
-      }
-      return count;
-    }, 0);
     const ok = Number((onText / typing.length) * 100).toFixed(2);
     props.setAccuracy(ok);
-    // infinity 방지
-    if (props.pastTime > 0) {
-      props.setTyping(Math.floor(Number((onText / props.pastTime) * 60)));
-    } else {
-      props.setTyping(0);
-    }
   }, [text]);
+
+  // 타수 계산 + infinity 방지
+  useEffect(() => {
+    if (onText > 0 && text.length > 0 && props.pastTime > 0) {
+      const typing = Math.floor(Number((onText / props.pastTime) * 60));
+      props.setTyping(typing == Infinity ? 0 : typing);
+      console.log(typing, '2222');
+    }
+  }, [props.pastTime]);
 
   // input focus이동
   useEffect(() => {
     const type = document.getElementById(`num${props.focusIndex}`);
-    if (type) {
+    if (type || props.accuracy == 100) {
       (type as HTMLInputElement)?.focus();
     }
   }, [props.focusIndex]);
 
+  const AddFunc = (a: number, b: number, c: number) => {
+    props.setTotalErrors((prev: string[]) => [...prev, String(a)]);
+    props.setTotalAccuracy((prev: string[]) => [...prev, String(b)]);
+    props.setTotalTyping((prev: string[]) => [...prev, String(c)]);
+  };
+  useEffect(() => {
+    if (enter) {
+      AddFunc(props.errorCount, props.accuracy, props.typing);
+      props.setTyping(0);
+      props.setAccuracy(0);
+    }
+  }, [enter]);
+
   const activeEnter = (e: any) => {
     if (text.length !== 0 && e.key === 'Enter') {
+      setIsEnter(true);
       if (props.focusIndex < props.inputCount - 1) {
         props.setFocusIndex(props.focusIndex + 1);
       } else {
         clearInterval(intervalRef.current);
         setTime(0);
         setRunning(false);
-        alert(`${time}`);
+        console.log(props.totalErrors, 'errorArr');
+        console.log(props.totalAccuracy, 'accArr');
+        console.log(props.totalTyping, 'typingArr');
+        localStorage.setItem(
+          'data',
+          JSON.stringify({
+            Times: String(time),
+            Errors: String(props.sumError),
+            Accuracys: props.avgAcc,
+            Typings: props.avgTyping,
+          })
+        );
       }
       setIsTyping(false);
     }
   };
-  // 전체시간 기록
-  // const startStopwatch = () => {
-  //   if (!running) {
-  //     intervalRef.current = setInterval(() => {
-  //       setTime((prevTime) => prevTime + 1000);
-  //     }, 1000);
-  //     setRunning(true);
-  //   } else {
-  //     clearInterval(intervalRef.current);
-  //     setRunning(false);
-  //   }
-  // };
-
-  // const resetStopwatch = () => {
-  //   clearInterval(intervalRef.current);
-  //   setTime(0);
-  //   setRunning(false);
-  // };
 
   const target: any = document.getElementById(`num0`);
-  if (target?.value?.length === 1) {
+  if (target?.value?.length > 0) {
     if (!running) {
       intervalRef.current = setInterval(() => {
         setTime((prevTime) => prevTime + 1000);
       }, 1000);
       setRunning(true);
     }
-    console.log('time', time);
   }
 
+  // 복사 금지
   window.addEventListener('copy', (e: any) => {
     e.preventDefault();
     e.clipboardData.setData('Text', '복사 금지!!');
   });
-
   return (
     <TypingInputStyle>
       <div className="codeWrap">
@@ -172,3 +192,28 @@ const TypingInput = (props: CodeProps) => {
 };
 
 export default TypingInput;
+// 전체시간 기록
+// const startStopwatch = () => {
+//   if (!running) {
+//     intervalRef.current = setInterval(() => {
+//       setTime((prevTime) => prevTime + 1000);
+//     }, 1000);
+//     setRunning(true);
+//   } else {
+//     clearInterval(intervalRef.current);
+//     setRunning(false);
+//   }
+// };
+
+// const resetStopwatch = () => {
+//   clearInterval(intervalRef.current);
+//   setTime(0);
+//   setRunning(false);
+// };
+
+// useEffect(() => {
+//   if (isTyping) {
+//     setTotalErrors(allErrors(codeJoin, text));
+//   }
+//   // console.log(totalErrors, 'd!!!!!!!!!!!!!');
+// }, [isTyping, pro]);

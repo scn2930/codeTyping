@@ -18,6 +18,22 @@ const TypingPage = () => {
   const [typing, setTyping] = useState(0);
   const inputCount = codeData?.length;
   const [focusIndex, setFocusIndex] = useState<number>(0);
+  const [totalErrors, setTotalErrors] = useState<string[]>([]);
+  const [totalAccuracy, setTotalAccuracy] = useState<string[]>([]);
+  const [totalTyping, setTotalTyping] = useState<string[]>([]);
+  const sumError = totalErrors?.reduce((acc, cur) => {
+    return acc + Number(cur);
+  }, 0);
+  const sumAcc = totalAccuracy?.reduce((acc, cur, i) => {
+    return Number(acc) + Number(cur);
+  }, 0);
+  const sumTyping = totalTyping?.reduce((acc, cur, i) => {
+    return Number(acc) + Number(cur);
+  }, 0);
+  const avgAcc = Number(sumAcc / inputCount).toFixed(2);
+  const avgTyping = Number(sumTyping / inputCount).toFixed(2);
+  console.log(avgAcc, '!!!!!!');
+  console.log(avgTyping, '????');
 
   return (
     <>
@@ -48,6 +64,15 @@ const TypingPage = () => {
             inputCount={inputCount}
             focusIndex={focusIndex}
             setFocusIndex={setFocusIndex}
+            totalErrors={totalErrors}
+            setTotalErrors={setTotalErrors}
+            totalTyping={totalTyping}
+            setTotalTyping={setTotalTyping}
+            totalAccuracy={totalAccuracy}
+            setTotalAccuracy={setTotalAccuracy}
+            sumError={sumError}
+            avgAcc={avgAcc}
+            avgTyping={avgTyping}
           />
         ))}
       </TyingPageStyle>

@@ -25,6 +25,7 @@ const PracticeItem = (props: langProps) => {
         {data?.map((x: any, i: number) => {
           return (
             <div
+              key={i + 'data'}
               onClick={() => {
                 RoutingTyping(x);
               }}
