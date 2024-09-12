@@ -35,4 +35,34 @@ export const CategoryStyle = styled.div`
       color: #fff;
     }
   }
+
+  /* Tablet styles */
+  @media (max-width: 768px) {
+    /* height: auto; */
+    padding: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
+
+    p {
+      width: 100px;
+      height: 35px;
+      line-height: 35px;
+      font-size: 0.9rem;
+      margin: 5px;
+    }
+  }
+
+  /* Mobile styles */
+  @media (max-width: 480px) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    p {
+      width: 80%
+      max-width: 220px; 
+      height: 35px;
+      line-height: 35px;
+      font-size: 0.75rem;
+      margin: 0 5px;
+    }
+  }
 `;

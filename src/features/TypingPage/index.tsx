@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { c, js, java, python } from '@/assets/data';
 import { StaticStyle, TyingPageStyle } from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TypingInput from '@/components/TypingInput';
+import { Modal } from 'antd';
 
 const TypingPage = () => {
   const router = useRouter();
@@ -21,6 +22,9 @@ const TypingPage = () => {
   const [totalErrors, setTotalErrors] = useState<string[]>([]);
   const [totalAccuracy, setTotalAccuracy] = useState<string[]>([]);
   const [totalTyping, setTotalTyping] = useState<string[]>([]);
+  const [data, setData] = useState<any>();
+  const [isOpen, setIsOpen] = useState(false);
+
   const sumError = totalErrors?.reduce((acc, cur) => {
     return acc + Number(cur);
   }, 0);
@@ -32,9 +36,37 @@ const TypingPage = () => {
   }, 0);
   const avgAcc = Number(sumAcc / inputCount).toFixed(2);
   const avgTyping = Number(sumTyping / inputCount).toFixed(2);
-  console.log(avgAcc, '!!!!!!');
-  console.log(avgTyping, '????');
 
+  useEffect(() => {
+    if (isOpen) {
+      const localString = localStorage.getItem('data');
+      if (localString) {
+        try {
+          const localData = JSON.parse(localString);
+          const sec = Math.floor(localData?.Times * 0.001);
+          const min = Math.floor(sec / 60 >= 60 ? sec % 60 : sec / 60);
+          const hour = Math.floor(sec / 3600);
+          setData({
+            sec: sec % 60,
+            min: min,
+            hour: hour,
+            Accuracys: localData?.Accuracys,
+            Typings: localData?.Typings,
+          });
+        } catch (error) {
+          console.log('에러');
+        }
+      }
+    }
+  }, [isOpen]);
+
+  const handleOk = () => {
+    setIsOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsOpen(false);
+  };
   return (
     <>
       <StaticStyle>
@@ -73,9 +105,18 @@ const TypingPage = () => {
             sumError={sumError}
             avgAcc={avgAcc}
             avgTyping={avgTyping}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
           />
         ))}
       </TyingPageStyle>
+      <Modal title="통계" open={isOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>
+          시간 : {data?.hour}시간 {data?.min}분 {data?.sec} 초
+        </p>
+        <p>정확도 : {data?.Accuracys} %</p>
+        <p>타수 : {data?.Typings} 타</p>
+      </Modal>
     </>
   );
 };

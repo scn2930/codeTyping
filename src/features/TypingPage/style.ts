@@ -21,7 +21,19 @@ export const StaticStyle = styled.div`
   @media (max-width: 768px) {
     padding: 15px;
     p {
+      font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 450px) {
+    padding: 10px;
+    p {
       font-size: 1rem;
+    }
+  }
+  @media (max-width: 400px) {
+    padding: 10px;
+    p {
+      font-size: 0.8rem;
     }
   }
 `;
@@ -62,5 +74,33 @@ export const TyingPageStyle = styled.div`
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px;
+
+    & > div {
+      font-size: 1em;
+      max-width: 500px;
+    }
+
+    .codeWrap {
+      max-width: 600px;
+      padding: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 15px;
+
+    & > div {
+      font-size: 0.9em;
+      max-width: 400px;
+    }
+
+    .codeWrap {
+      max-width: 100%;
+      padding: 10px;
+    }
   }
 `;

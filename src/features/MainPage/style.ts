@@ -59,6 +59,18 @@ export const MainStyle = styled.div`
       opacity: 0;
     }
   }
+
+  @media (max-width: 768px) {
+    .text {
+      font-size: 1.8em;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .text {
+      font-size: 1.2em;
+    }
+  }
 `;
 
 export const ButtonStyle = styled.div`
@@ -116,5 +128,30 @@ export const ButtonStyle = styled.div`
   .btnBottom {
     display: flex;
     justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .button {
+      Button {
+        width: 250px;
+        height: 45px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .button {
+      Button {
+        width: 200px;
+        height: 40px;
+        font-size: 14px;
+      }
+    }
+
+    .btnTop {
+      flex-direction: column;
+      gap: 20px;
+    }
   }
 `;

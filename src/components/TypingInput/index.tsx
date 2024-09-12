@@ -29,6 +29,8 @@ interface CodeProps {
   sumError: number;
   avgAcc: string;
   avgTyping: string;
+  isOpen: boolean;
+  setIsOpen: any;
 }
 
 const TypingInput = (props: CodeProps) => {
@@ -107,7 +109,6 @@ const TypingInput = (props: CodeProps) => {
     if (onText > 0 && text.length > 0 && props.pastTime > 0) {
       const typing = Math.floor(Number((onText / props.pastTime) * 60));
       props.setTyping(typing == Infinity ? 0 : typing);
-      console.log(typing, '2222');
     }
   }, [props.pastTime]);
 
@@ -141,18 +142,15 @@ const TypingInput = (props: CodeProps) => {
         clearInterval(intervalRef.current);
         setTime(0);
         setRunning(false);
-        console.log(props.totalErrors, 'errorArr');
-        console.log(props.totalAccuracy, 'accArr');
-        console.log(props.totalTyping, 'typingArr');
-        localStorage.setItem(
-          'data',
-          JSON.stringify({
-            Times: String(time),
-            Errors: String(props.sumError),
-            Accuracys: props.avgAcc,
-            Typings: props.avgTyping,
-          })
-        );
+        props.setErrorCount(0);
+        props.setIsOpen(true);
+        const local = {
+          Times: String(time),
+          Errors: props.sumError,
+          Accuracys: props.avgAcc,
+          Typings: props.avgTyping,
+        };
+        localStorage.setItem('data', JSON.stringify(local));
       }
       setIsTyping(false);
     }
@@ -192,28 +190,3 @@ const TypingInput = (props: CodeProps) => {
 };
 
 export default TypingInput;
-// 전체시간 기록
-// const startStopwatch = () => {
-//   if (!running) {
-//     intervalRef.current = setInterval(() => {
-//       setTime((prevTime) => prevTime + 1000);
-//     }, 1000);
-//     setRunning(true);
-//   } else {
-//     clearInterval(intervalRef.current);
-//     setRunning(false);
-//   }
-// };
-
-// const resetStopwatch = () => {
-//   clearInterval(intervalRef.current);
-//   setTime(0);
-//   setRunning(false);
-// };
-
-// useEffect(() => {
-//   if (isTyping) {
-//     setTotalErrors(allErrors(codeJoin, text));
-//   }
-//   // console.log(totalErrors, 'd!!!!!!!!!!!!!');
-// }, [isTyping, pro]);
