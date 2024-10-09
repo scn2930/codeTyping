@@ -34,18 +34,27 @@
 
 <br>
 
-- 메인페이지입니다..
+- useEffect와 css 애니메이션을 사용해 문장을 순서대로 보여줍니다.
+- 모든 문장이 끝나면 페이지를 이동하는 버튼이 나타납니다.
 
 <br>
 
 ### 타자 연습
-<a><img src="https://github.com/user-attachments/assets/85b4940f-d8db-426a-88a4-76359f6c3d9d" alt="search"/></a>
+<a><img src="https://github.com/user-attachments/assets/7278309c-ecc3-4c20-9c6d-669371707a3b" alt="typing"/></a>
 
 <br>
 
-- 타자 연습 페이지
-  
+- 한 문장의 통계를 보여줍니다.
+- 정확도는 원본 문장과 입력한 문자를 비교해 백분율로 표현했습니다.
+- 타수는 입력한 문자 중 정확한 문자 수를 기준으로 1분동안의 예상타수를 계산했습니다.
+- 붙여넣기를 방지하는 이벤트를 추가했습니다.
+
+<br>
+
+<a><img src="https://github.com/user-attachments/assets/08083022-247d-4f30-9a13-e78acad77aab" width="900" alt="total"></a>
+
+<br>
 
 
-
+- 모든 문장을 완료하면 총 시간, 정확도, 타수를 확인할 수 있습니다.
 
