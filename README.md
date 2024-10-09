@@ -52,10 +52,10 @@
 
 <br>
 
-### 통계
+### 전체 통계
 <a><img src="https://github.com/user-attachments/assets/08083022-247d-4f30-9a13-e78acad77aab" width="900" alt="total"></a>
 
 <br>
 
-- 모든 문장을 완료하면 총 시간, 정확도, 타수를 확인할 수 있습니다.
+- 모든 문장을 완료하면 평균을 구해 총 시간, 정확도, 타수를 확인할 수 있습니다.
 
